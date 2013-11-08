@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'document_generator'
+
+DocumentGenerator::CLI.start(ARGV)

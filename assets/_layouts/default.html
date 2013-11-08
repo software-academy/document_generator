@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% if page.title }%} - {{page.title}}{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- styles -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/docs-assets/css/docs.css" />
+    <style type="text/css">
+      /* override the bootstrap docs css */
+      body {
+        padding-top: 0;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      h3 {
+        font-size: 16px;
+      }
+      h1, h2, h3 {
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">Modify this in _layouts/default.html
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="bs-sidebar hidden-print" id="sidebar">
+            <ol id="menu" class="nav nav-list bs-sidenav">
+              {% include menu.md %}
+            </ol>
+          </div>
+        </div>
+        <div class="col-md-9">
+          {{content}}
+          <hr />
+          <div class="previous-page  pull-left"></div>
+          <div class="next-page  pull-right"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+    </script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        $('#menu [data-section="{{page.section}}"]').addClass('active');
+        // Rewrite using data-attributes
+
+        var page_title = $('h1#main').text();
+        var current_item = $('ol#menu li a').filter(function(index) {
+          return $(this).text() === page_title;
+          });
+        current_item.parent().addClass( "active" );
+
+        var next_item = current_item.parent().next();
+        var previous_item = current_item.parent().prev();
+
+        if(previous_item.length) {
+          $('<a href="'+ previous_item.find('a').attr('href')
+            +'">'+ '← ' + previous_item.find('a').text()
+            +'</a>').appendTo($('.previous-page'));
+          }
+        else {
+          // If no previous item and no next item, it is the index page
+          // So, show link to the first item in the list
+          if(!next_item.length) {
+            $('<a href="'+ $('ol#menu li a').first().attr('href')
+              +'">'+ $('ol#menu li a').first().text() + ' →'
+              +'</a>').appendTo($('.next-page'));
+          }
+        }
+
+        if(next_item.length){
+          $('<a href="'+ next_item.find('a').attr('href')
+            +'">'+ next_item.find('a').text() + ' →'
+            +'</a>').appendTo($('.next-page'));
+          }
+      });
+    </script>
+  </body>
+</html>
