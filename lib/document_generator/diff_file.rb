@@ -30,11 +30,13 @@ module DocumentGenerator
 
       if markdown_outputs.any?
         markdown_outputs.each do |output|
-          temp << "\n\n"
-          temp << output.description
-          temp << "\n<pre><code>"
-          temp << output.escaped_content
-          temp << "</code></pre>\n"
+          if output.escaped_content.length > 0
+            temp << "\n\n"
+            temp << output.description
+            temp << "\n<pre><code>"
+            temp << output.escaped_content
+            temp << "</code></pre>\n"
+          end
         end
       end
 
