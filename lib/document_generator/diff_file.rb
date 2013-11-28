@@ -26,7 +26,7 @@ module DocumentGenerator
       end
 
       temp = []
-      temp << patch_heading
+      temp << "####{patch_heading}"
 
       if markdown_outputs.any?
         markdown_outputs.each do |output|

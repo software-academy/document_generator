@@ -29,7 +29,7 @@ EXPECTED
 
     let(:expected_content) do
 <<-EXPECTED_CONTENT
-Create file `/spec/support/capybara.rb`
+###Create file `/spec/support/capybara.rb`
 
 Add
 <pre><code> Capybara.javascript_driver = :webkit</code></pre>
@@ -220,7 +220,7 @@ ENDING
 
     let(:expected_content) do
 <<-EXPECTED_CONTENT
-Update file `/spec/controllers/posts_controller_spec.rb`
+###Update file `/spec/controllers/posts_controller_spec.rb`
 
 Change
 <pre><code>   describe GET new do</code></pre>
@@ -352,7 +352,7 @@ PATCH
 
     let(:expected_content) do
 <<-EXPECTED_CONTENT
-Create file `/spec/support/capybara.rb`
+###Create file `/spec/support/capybara.rb`
 
 Add
 <pre><code> Capybara.javascript_driver = :webkit</code></pre>
