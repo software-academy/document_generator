@@ -424,7 +424,7 @@ PATCH
 
     let(:expected_content) do
 <<-EXPECTED_CONTENT
-Remove file `/app/helpers/welcome_helper.rb`
+###Remove file `/app/helpers/welcome_helper.rb`
 
 EXPECTED_CONTENT
     end

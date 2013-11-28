@@ -22,7 +22,7 @@ module DocumentGenerator
 
     def content
       if type == 'deleted'
-        return patch_heading + "\n\n"
+        return "####{patch_heading}\n\n"
       end
 
       temp = []
