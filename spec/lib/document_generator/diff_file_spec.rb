@@ -245,7 +245,7 @@ To
 
 
 Becomes
-<pre><code>    describe 'GET #new' do
+<pre><code>   describe 'GET #new' do
      it "returns http success" do
        get :new
        expect(response).to be_success
@@ -263,12 +263,13 @@ To
 
 
 Becomes
-<pre><code>    describe 'GET #index' do
+<pre><code>   describe 'GET #index' do
      it "returns http success" do
        get :index
        expect(response).to be_success
      end
    end
+ end
 </code></pre>
 
 
@@ -301,11 +302,17 @@ EXPECTED_CONTENT
         expect(diff_file.markdown_outputs[1].description).to eq "To"
         expect(diff_file.markdown_outputs[1].content).to eq ["       expect(response).to be_success"]
 
-        expect(diff_file.markdown_outputs[2].description).to eq "Change"
-        expect(diff_file.markdown_outputs[2].content).to eq ["       response.should be_success"]
+        expect(diff_file.markdown_outputs[2].description).to eq "Becomes"
+        expect(diff_file.markdown_outputs[2].content).to eq ["   describe 'GET #new' do", "     it \"returns http success\" do", "       get :new", "       expect(response).to be_success", "     end", "   end"]
 
-        expect(diff_file.markdown_outputs[3].description).to eq "To"
-        expect(diff_file.markdown_outputs[3].content).to eq ["       expect(response).to be_success"]
+        expect(diff_file.markdown_outputs[3].description).to eq "Change"
+        expect(diff_file.markdown_outputs[3].content).to eq ["       response.should be_success"]
+
+        expect(diff_file.markdown_outputs[4].description).to eq "To"
+        expect(diff_file.markdown_outputs[4].content).to eq ["       expect(response).to be_success"]
+
+        expect(diff_file.markdown_outputs[5].description).to eq "Becomes"
+        expect(diff_file.markdown_outputs[5].content).to eq ["   describe 'GET #index' do", "     it \"returns http success\" do", "       get :index", "       expect(response).to be_success", "     end", "   end", " end"]
       end
     end
   end
@@ -413,6 +420,9 @@ EXPECTED_CONTENT
 
         expect(diff_file.markdown_outputs[3].description).to eq "To"
         expect(diff_file.markdown_outputs[3].content).to eq ["       get new"]
+
+        expect(diff_file.markdown_outputs[4].description).to eq "Becomes"
+        expect(diff_file.markdown_outputs[4].content).to eq ["       stuff"]
       end
     end
   end
