@@ -1,4 +1,5 @@
 require 'cgi'
+require 'pry'
 
 module DocumentGenerator
   class DiffFile
@@ -54,19 +55,23 @@ module DocumentGenerator
     end
 
     def ending_code
-      clean_lines = []
-      git_diff_file_lines[code_line_start..-1].each_with_index do |line, index|
+      clean_hunks = []
+      git_diff_file_hunks.each do |hunk|
+        clean_lines = []
 
-        if (line[0]) == "-" || ignore_line?(line)
-          next
-        end
+        git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
+          if (line[0]) == "-" || ignore_line?(line)
+            next
+          end
 
-        if (line[0]) == "+"
-          line = remove_first_character(line)
+          if (line[0]) == "+"
+            line = remove_first_character(line)
+          end
+          clean_lines << line
         end
-        clean_lines << line
+        clean_hunks << clean_lines.join("\n")
       end
-      Output.no_really_escape(CGI.escapeHTML(clean_lines.join("\n")))
+      Output.no_really_escape(CGI.escapeHTML(clean_hunks.join("\n")))
     end
 
     def action_type
@@ -114,6 +119,16 @@ module DocumentGenerator
     end
 
   private
+
+    def git_diff_file_hunks
+      hunks = git_diff_file.patch.split(/@@.*@@.*\n/)
+      hunks.shift # Shift to pop first element off array which is just git diff header info
+      hunks
+    end
+
+    def git_diff_file_hunk_lines(hunk)
+      hunk.split("\n")
+    end
 
     def ignore_line?(line)
       line.strip == 'No newline at end of file'
