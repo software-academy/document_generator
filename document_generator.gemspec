@@ -28,4 +28,5 @@ DOCUMENT_GENERATOR
   spec.add_development_dependency 'rspec', '~> 2.14'
   spec.add_development_dependency 'rspec-fire', '~> 1.3'
   spec.add_development_dependency 'simplecov', '~> 0.7'
+  spec.add_development_dependency 'pry'
 end
