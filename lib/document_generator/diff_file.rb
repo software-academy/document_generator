@@ -142,16 +142,19 @@ module DocumentGenerator
             output.content = line_block(last_same_line(index, hunk) + 1, last_line, hunk)
             outputs << output
             last_line = last_same_line(last_same_line(index, hunk) + 1, hunk)
-
-            output = Output.new
-            output.description = "Becomes"
-            output.content = ending_code_for(hunk)
-            outputs << output
           else
             output = Output.new
             output.description = "Remove"
             last_line = last_same_line(index, hunk)
             output.content = line_block(index, last_line, hunk)
+            outputs << output
+          end
+
+          # WTF do I put this? Gotta be easy; get it later
+          if git_diff_file.type == 'modified' && done_with_changes?(last_line, hunk)
+            output = Output.new
+            output.description = "Becomes"
+            output.content = ending_code_for(hunk)
             outputs << output
           end
         end
@@ -169,6 +172,16 @@ module DocumentGenerator
     end
 
     private
+
+    def done_with_changes?(start_index, hunk)
+      git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
+        next if index <= start_index
+        if line.strip[0] == "-"
+          false if line_sign(index + 1, hunk) == '+'
+        end
+      end
+      true
+    end
 
     def git_diff_file_hunks
       hunks = git_diff_file.patch.split(/@@.*@@.*\n/)
