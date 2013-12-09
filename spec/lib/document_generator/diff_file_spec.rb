@@ -181,6 +181,132 @@ EXPECTED_CONTENT
     end
   end
 
+  context 'when the git diff file has two changes in different hunks' do
+    let(:type) { 'modified' }
+    let(:file_name) { '/spec/controllers/posts_controller_spec.rb' }
+
+    let(:patch) do
+<<-PATCH
+stuffasdfasdfadasdfasd
+asdadsfasdfasdf
+asdfasdfasdfasdf
+@@ -5,7 +5,7 @@
+   describe 'GET #new' do
+     it "returns http success" do
+       get :new
+-      response.should be_success
++      expect(response).to be_success
+     end
+   end
+
+@@ -19,7 +19,7 @@
+   describe 'GET #index' do
+     it "returns http success" do
+       get :index
+-      response.should be_success
++      expect(response).to be_success
+     end
+   end
+ end
+PATCH
+    end
+
+    let(:ending) do
+<<-ENDING
+   describe 'GET #new' do
+     it "returns http success" do
+       get :new
+       expect(response).to be_success
+     end
+   end
+   describe 'GET #index' do
+     it "returns http success" do
+       get :index
+       expect(response).to be_success
+     end
+   end
+ end
+ENDING
+    end
+
+    let(:expected_content) do
+<<-EXPECTED_CONTENT
+###Update file `/spec/controllers/posts_controller_spec.rb`
+
+Change
+<pre><code>       response.should be_success</code></pre>
+
+
+To
+<pre><code>       expect(response).to be_success</code></pre>
+
+
+Becomes
+<pre><code>    describe 'GET #new' do
+     it "returns http success" do
+       get :new
+       expect(response).to be_success
+     end
+   end
+</code></pre>
+
+
+Change
+<pre><code>       response.should be_success</code></pre>
+
+
+To
+<pre><code>       expect(response).to be_success</code></pre>
+
+
+Becomes
+<pre><code>    describe 'GET #index' do
+     it "returns http success" do
+       get :index
+       expect(response).to be_success
+     end
+   end
+</code></pre>
+
+
+EXPECTED_CONTENT
+    end
+
+    describe '#content' do
+      it 'includes the Becomes section' do
+        expect(diff_file.content).to eq expected_content
+      end
+    end
+
+    describe '#ending_code' do
+      it 'contains the ending_code' do
+        expect(diff_file.ending_code).to eq DocumentGenerator::Output.no_really_escape(CGI.escapeHTML(ending.rstrip))
+      end
+    end
+
+    describe '#action_type' do
+      it 'outputs correct phrase for action_type' do
+        expect(diff_file.action_type).to eq "Update file"
+      end
+    end
+
+    describe '#markdown_outputs' do
+      it 'has correct markdown outputs' do
+        expect(diff_file.markdown_outputs.first.description).to eq "Change"
+        expect(diff_file.markdown_outputs.first.content).to eq ["       response.should be_success"]
+
+        expect(diff_file.markdown_outputs[1].description).to eq "To"
+        expect(diff_file.markdown_outputs[1].content).to eq ["       expect(response).to be_success"]
+
+        expect(diff_file.markdown_outputs[2].description).to eq "Change"
+        expect(diff_file.markdown_outputs[2].content).to eq ["       response.should be_success"]
+
+        expect(diff_file.markdown_outputs[3].description).to eq "To"
+        expect(diff_file.markdown_outputs[3].content).to eq ["       expect(response).to be_success"]
+      end
+    end
+  end
+
   context 'when the git diff file has two changes' do
     let(:type) { 'modified' }
     let(:file_name) { '/spec/controllers/posts_controller_spec.rb' }
