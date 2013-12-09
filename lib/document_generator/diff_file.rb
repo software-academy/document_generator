@@ -29,6 +29,12 @@ module DocumentGenerator
       temp = []
       temp << "####{patch_heading}"
 
+      # Modify markdown_outputs to include Becomes with ending_code as
+      # escaped_content?
+      #
+      # Or try it like this (maybe refactor to the above idea after?)
+      #
+
       if markdown_outputs.any?
         markdown_outputs.each do |output|
           if output.escaped_content.length > 0
@@ -39,15 +45,16 @@ module DocumentGenerator
             temp << "</code></pre>\n"
           end
         end
+
       end
 
-      if git_diff_file.type == "modified"
-        temp << "\n\n"
-        temp << "Becomes"
-        temp << "\n<pre><code>"
-        temp << ending_code
-        temp << "\n</code></pre>\n"
-      end
+      #if git_diff_file.type == "modified"
+        #temp << "\n\n"
+        #temp << "Becomes"
+        #temp << "\n<pre><code>"
+        #temp << ending_code
+        #temp << "\n</code></pre>\n"
+      #end
 
       temp << "\n\n"
 
@@ -78,6 +85,10 @@ module DocumentGenerator
       { new: 'Create file',
         modified: 'Update file',
         deleted: 'Remove file' }.fetch(type.to_sym, type)
+    end
+
+    def markdown_outputs
+
     end
 
     def markdown_outputs # returns an array of outputs
@@ -115,10 +126,18 @@ module DocumentGenerator
         end
 
       end
+
+      if git_diff_file.type == "modified"
+        output = Output.new
+        output.description = "Becomes"
+        output.content = CGI.unescapeHTML(Output.no_really_unescape(ending_code)).split("\n")
+        outputs << output
+      end
+
       outputs
     end
 
-  private
+    private
 
     def git_diff_file_hunks
       hunks = git_diff_file.patch.split(/@@.*@@.*\n/)

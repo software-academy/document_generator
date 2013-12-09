@@ -168,8 +168,11 @@ EXPECTED_CONTENT
         expect(diff_file.markdown_outputs.first.description).to eq "Change"
         expect(diff_file.markdown_outputs.first.escaped_content).to eq CGI.escapeHTML(" <%= form_for :post do |f| %>")
 
-        expect(diff_file.markdown_outputs.last.description).to eq "To"
-        expect(diff_file.markdown_outputs.last.escaped_content).to eq CGI.escapeHTML(" <%= form_for :post, url: posts_path do |f| %>")
+        expect(diff_file.markdown_outputs[1].description).to eq "To"
+        expect(diff_file.markdown_outputs[1].escaped_content).to eq CGI.escapeHTML(" <%= form_for :post, url: posts_path do |f| %>")
+
+        expect(diff_file.markdown_outputs[2].description).to eq "Becomes"
+        expect(diff_file.markdown_outputs[2].escaped_content).to eq diff_file.ending_code
       end
     end
 
