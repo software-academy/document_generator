@@ -29,14 +29,9 @@ module DocumentGenerator
       temp = []
       temp << "####{patch_heading}"
 
-      # Modify markdown_outputs to include Becomes with ending_code as
-      # escaped_content?
-      #
-      # Or try it like this (maybe refactor to the above idea after?)
-      #
-
-      if markdown_outputs.any?
-        markdown_outputs.each do |output|
+      outputs = markdown_outputs
+      if outputs.any?
+        outputs.each do |output|
           if output.escaped_content.length > 0
             temp << "\n\n"
             temp << output.description
@@ -52,14 +47,6 @@ module DocumentGenerator
 
       end
 
-      #if git_diff_file.type == "modified"
-      #temp << "\n\n"
-      #temp << "Becomes"
-      #temp << "\n<pre><code>"
-      #temp << ending_code
-      #temp << "\n</code></pre>\n"
-      #end
-
       temp << "\n\n"
 
       temp.join
@@ -70,7 +57,7 @@ module DocumentGenerator
       git_diff_file_hunks.each do |hunk|
         clean_lines = []
 
-        git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
+        git_diff_lines_for(hunk).each_with_index do |line, index|
           if (line[0]) == "-" || ignore_line?(line)
             next
           end
@@ -88,7 +75,7 @@ module DocumentGenerator
     def ending_code_for(hunk) # The unescaped code for a particular hunk returned as array
       clean_lines = []
 
-      git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
+      git_diff_lines_for(hunk).each_with_index do |line, index|
         if (line[0]) == "-" || ignore_line?(line)
           next
         end
@@ -119,7 +106,7 @@ module DocumentGenerator
     def markdown_outputs_for(hunk) # returns an array of outputs for the particular hunk
       outputs = []
       last_line = -1
-      git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
+      git_diff_lines_for(hunk).each_with_index do |line, index|
         next if index <= last_line
         case line.strip[0]
 
@@ -150,38 +137,21 @@ module DocumentGenerator
             outputs << output
           end
 
-          # WTF do I put this? Gotta be easy; get it later
-          if git_diff_file.type == 'modified' && done_with_changes?(last_line, hunk)
-            output = Output.new
-            output.description = "Becomes"
-            output.content = ending_code_for(hunk)
-            outputs << output
-          end
         end
 
       end
 
-      #if git_diff_file.type == "modified"
-        #output = Output.new
-        #output.description = "Becomes"
-        #output.content = CGI.unescapeHTML(Output.no_really_unescape(ending_code)).split("\n")
-        #outputs << output
-      #end
+      if git_diff_file.type == 'modified'
+        output = Output.new
+        output.description = "Becomes"
+        output.content = ending_code_for(hunk)
+        outputs << output
+      end
 
       outputs
     end
 
     private
-
-    def done_with_changes?(start_index, hunk)
-      git_diff_file_hunk_lines(hunk).each_with_index do |line, index|
-        next if index <= start_index
-        if line.strip[0] == "-"
-          false if line_sign(index + 1, hunk) == '+'
-        end
-      end
-      true
-    end
 
     def git_diff_file_hunks
       hunks = git_diff_file.patch.split(/@@.*@@.*\n/)
@@ -190,7 +160,7 @@ module DocumentGenerator
     end
 
     # rename git_diff_file_lines_for(hunk)
-    def git_diff_file_hunk_lines(hunk)
+    def git_diff_lines_for(hunk)
       hunk.split("\n")
     end
 
@@ -201,7 +171,7 @@ module DocumentGenerator
     def last_same_line(line_index, hunk)
       starting_sign = line_sign(line_index, hunk)
 
-      git_diff_file_hunk_lines(hunk)[line_index..-1].each_with_index do |line, index|
+      git_diff_lines_for(hunk)[line_index..-1].each_with_index do |line, index|
         if line_sign(index + 1 + line_index, hunk) != starting_sign
           return (index + line_index)
         end
@@ -210,7 +180,7 @@ module DocumentGenerator
 
     def line_block(beginning, ending, hunk)
       lines = []
-      git_diff_file_hunk_lines(hunk)[beginning..ending].each do |line|
+      git_diff_lines_for(hunk)[beginning..ending].each do |line|
         if ["+", "-"].include?(line[0..0])
           line = remove_first_character(line)
         end
@@ -222,17 +192,12 @@ module DocumentGenerator
     end
 
     def line_sign(line_number, hunk)
-      (git_diff_file_hunk_lines(hunk)[line_number] || '').strip[0]
+      (git_diff_lines_for(hunk)[line_number] || '').strip[0]
     end
 
     def remove_first_character(line)
       " " + line[1..-1]
     end
 
-    def code_line_start
-      git_diff_file_lines.each_with_index do |line, index|
-        return (index + 1) if line[0..1] == "@@"
-      end
-    end
   end
 end

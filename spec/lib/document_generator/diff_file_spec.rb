@@ -376,7 +376,7 @@ To
 
 Becomes
 <pre><code>describe PostsController do
-&nbsp;
+
    describe GET new do
    it returns http success do
        get new
@@ -422,7 +422,7 @@ EXPECTED_CONTENT
         expect(diff_file.markdown_outputs[3].content).to eq ["       get new"]
 
         expect(diff_file.markdown_outputs[4].description).to eq "Becomes"
-        expect(diff_file.markdown_outputs[4].content).to eq ["       stuff"]
+        expect(diff_file.markdown_outputs[4].content).to eq ["describe PostsController do", "", "   describe GET new do", "   it returns http success do", "       get new", "     response.should be_success", "   end", " end"]
       end
     end
   end
