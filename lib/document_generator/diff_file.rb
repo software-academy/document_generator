@@ -89,7 +89,7 @@ module DocumentGenerator
         deleted: 'Remove file' }.fetch(type.to_sym, type)
     end
 
-    def markdown_output
+    def markdown_outputs
       outputs = []
       git_diff_file_hunks.each do |hunk|
         outputs << markdown_outputs_for(hunk)
