@@ -13,12 +13,18 @@ module DocumentGenerator
       @git_diff_file = git_diff_file
     end
 
-    def git_diff_file_lines
-      git_diff_file.patch.split("\n")
-    end
-
     def patch_heading
       "#{action_type} `#{git_diff_file.path}`"
+    end
+
+    def git_diff_file_hunks
+      hunks = git_diff_file.patch.split(/@@.*@@.*\n/)
+      hunks.shift # Shift to pop first element off array which is just git diff header info
+      hunks
+    end
+
+    def git_diff_lines_for(hunk)
+      hunk.split("\n")
     end
 
     def content
@@ -52,27 +58,15 @@ module DocumentGenerator
       temp.join
     end
 
-    def ending_code
+    def ending_code # The escaped end result code for the whole diff file returned as a string
       clean_hunks = []
       git_diff_file_hunks.each do |hunk|
-        clean_lines = []
-
-        git_diff_lines_for(hunk).each_with_index do |line, index|
-          if (line[0]) == "-" || ignore_line?(line)
-            next
-          end
-
-          if (line[0]) == "+"
-            line = remove_first_character(line)
-          end
-          clean_lines << line
-        end
-        clean_hunks << clean_lines.join("\n")
+        clean_hunks << ending_code_for(hunk).join("\n")
       end
       Output.no_really_escape(CGI.escapeHTML(clean_hunks.join("\n")))
     end
 
-    def ending_code_for(hunk) # The unescaped code for a particular hunk returned as array
+    def ending_code_for(hunk) # The unescaped end result code for a particular hunk returned as array
       clean_lines = []
 
       git_diff_lines_for(hunk).each_with_index do |line, index|
@@ -95,7 +89,7 @@ module DocumentGenerator
         deleted: 'Remove file' }.fetch(type.to_sym, type)
     end
 
-    def markdown_outputs
+    def markdown_output
       outputs = []
       git_diff_file_hunks.each do |hunk|
         outputs << markdown_outputs_for(hunk)
@@ -103,7 +97,7 @@ module DocumentGenerator
       outputs.flatten
     end
 
-    def markdown_outputs_for(hunk) # returns an array of outputs for the particular hunk
+    def markdown_outputs_for(hunk) # returns an array of outputs for a particular hunk
       outputs = []
       last_line = -1
       git_diff_lines_for(hunk).each_with_index do |line, index|
@@ -136,9 +130,7 @@ module DocumentGenerator
             output.content = line_block(index, last_line, hunk)
             outputs << output
           end
-
         end
-
       end
 
       if git_diff_file.type == 'modified'
@@ -151,18 +143,9 @@ module DocumentGenerator
       outputs
     end
 
+
+
     private
-
-    def git_diff_file_hunks
-      hunks = git_diff_file.patch.split(/@@.*@@.*\n/)
-      hunks.shift # Shift to pop first element off array which is just git diff header info
-      hunks
-    end
-
-    # rename git_diff_file_lines_for(hunk)
-    def git_diff_lines_for(hunk)
-      hunk.split("\n")
-    end
 
     def ignore_line?(line)
       line.strip == 'No newline at end of file'
@@ -198,6 +181,5 @@ module DocumentGenerator
     def remove_first_character(line)
       " " + line[1..-1]
     end
-
   end
 end
