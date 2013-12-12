@@ -1,5 +1,4 @@
 require 'cgi'
-require 'pry'
 
 module DocumentGenerator
   class DiffFile
