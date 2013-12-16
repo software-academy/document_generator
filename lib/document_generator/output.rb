@@ -14,6 +14,10 @@ module DocumentGenerator
       end.join("\n")
     end
 
+    def self.no_really_unescape(value)
+      value.gsub('&nbsp;', ' ')
+    end
+
     def escaped_content
       temp = []
       content.each do |line|
