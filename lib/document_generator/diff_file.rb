@@ -39,7 +39,7 @@ module DocumentGenerator
         outputs.each do |output|
           if output.escaped_content.length > 0
             temp << "\n\n"
-            temp << output.description
+            temp << "#####{output.description}"
             temp << "\n```\n"
             if output.description == "Becomes"
               temp << output.content.join("\n") + "\n"
