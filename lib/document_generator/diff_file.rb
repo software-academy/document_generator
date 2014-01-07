@@ -40,13 +40,13 @@ module DocumentGenerator
           if output.escaped_content.length > 0
             temp << "\n\n"
             temp << output.description
-            temp << "\n<pre><code>"
+            temp << "\n```\n"
             if output.description == "Becomes"
               temp << output.content.join("\n") + "\n"
             else
               temp << output.escaped_content
             end
-            temp << "</code></pre>\n"
+            temp << "\n```\n"
           end
         end
 
@@ -62,7 +62,7 @@ module DocumentGenerator
       git_diff_file_hunks.each do |hunk|
         clean_hunks << ending_code_for(hunk).join("\n")
       end
-      Output.no_really_escape(CGI.escapeHTML(clean_hunks.join("\n")))
+      clean_hunks.join("\n")
     end
 
     def ending_code_for(hunk) # The unescaped end result code for a particular hunk returned as array
@@ -76,7 +76,6 @@ module DocumentGenerator
         if (line[0]) == "+"
           line = remove_first_character(line)
         end
-        line = CGI.unescapeHTML(line) # Shouldn't be necessary?
         clean_lines << line
       end
       clean_lines

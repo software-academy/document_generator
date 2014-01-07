@@ -32,7 +32,9 @@ EXPECTED
 ###Create file `/spec/support/capybara.rb`
 
 Add
-<pre><code> Capybara.javascript_driver = :webkit</code></pre>
+```
+ Capybara.javascript_driver = :webkit
+```
 
 
 EXPECTED_CONTENT
@@ -65,7 +67,7 @@ EXPECTED_CONTENT
     describe '#markdown_outputs' do
       it 'has correct markdown outputs' do
         expect(diff_file.markdown_outputs.first.description).to eq "Add"
-        expect(diff_file.markdown_outputs.first.escaped_content).to eq CGI.escapeHTML(" Capybara.javascript_driver = :webkit")
+        expect(diff_file.markdown_outputs.first.escaped_content).to eq " Capybara.javascript_driver = :webkit"
       end
     end
   end
@@ -153,7 +155,7 @@ EXPECTED_CONTENT
 
     describe '#ending_code' do
       it 'contains the ending_code' do
-        expect(diff_file.ending_code).to eq DocumentGenerator::Output.no_really_escape(CGI.escapeHTML(ending.strip))
+        expect(diff_file.ending_code).to eq ending.strip
       end
     end
 
@@ -166,10 +168,10 @@ EXPECTED_CONTENT
     describe '#markdown_outputs' do
       it 'has correct markdown outputs' do
         expect(diff_file.markdown_outputs.first.description).to eq "Change"
-        expect(diff_file.markdown_outputs.first.escaped_content).to eq CGI.escapeHTML(" <%= form_for :post do |f| %>")
+        expect(diff_file.markdown_outputs.first.escaped_content).to eq " <%= form_for :post do |f| %>"
 
         expect(diff_file.markdown_outputs[1].description).to eq "To"
-        expect(diff_file.markdown_outputs[1].escaped_content).to eq CGI.escapeHTML(" <%= form_for :post, url: posts_path do |f| %>")
+        expect(diff_file.markdown_outputs[1].escaped_content).to eq " <%= form_for :post, url: posts_path do |f| %>"
 
         expect(diff_file.markdown_outputs[2].description).to eq "Becomes"
         expect(diff_file.markdown_outputs[2].escaped_content).to eq diff_file.ending_code
@@ -237,40 +239,52 @@ ENDING
 ###Update file `/spec/controllers/posts_controller_spec.rb`
 
 Change
-<pre><code>       response.should be_success</code></pre>
+```
+       response.should be_success
+```
 
 
 To
-<pre><code>       expect(response).to be_success</code></pre>
+```
+       expect(response).to be_success
+```
 
 
 Becomes
-<pre><code>   describe 'GET #new' do
+```
+   describe 'GET #new' do
      it "returns http success" do
        get :new
        expect(response).to be_success
      end
    end
-</code></pre>
+
+```
 
 
 Change
-<pre><code>       response.should be_success</code></pre>
+```
+       response.should be_success
+```
 
 
 To
-<pre><code>       expect(response).to be_success</code></pre>
+```
+       expect(response).to be_success
+```
 
 
 Becomes
-<pre><code>   describe 'GET #index' do
+```
+   describe 'GET #index' do
      it "returns http success" do
        get :index
        expect(response).to be_success
      end
    end
  end
-</code></pre>
+
+```
 
 
 EXPECTED_CONTENT
@@ -284,7 +298,7 @@ EXPECTED_CONTENT
 
     describe '#ending_code' do
       it 'contains the ending_code' do
-        expect(diff_file.ending_code).to eq DocumentGenerator::Output.no_really_escape(CGI.escapeHTML(ending.rstrip))
+        expect(diff_file.ending_code).to eq ending.rstrip
       end
     end
 
@@ -359,23 +373,32 @@ ENDING
 ###Update file `/spec/controllers/posts_controller_spec.rb`
 
 Change
-<pre><code>   describe GET new do</code></pre>
+```
+   describe GET new do
+```
 
 
 To
-<pre><code>   describe GET new do</code></pre>
+```
+   describe GET new do
+```
 
 
 Change
-<pre><code>       get new</code></pre>
+```
+       get new
+```
 
 
 To
-<pre><code>       get new</code></pre>
+```
+       get new
+```
 
 
 Becomes
-<pre><code>describe PostsController do
+```
+describe PostsController do
 
    describe GET new do
    it returns http success do
@@ -383,7 +406,8 @@ Becomes
      response.should be_success
    end
  end
-</code></pre>
+
+```
 
 
 EXPECTED_CONTENT
@@ -397,7 +421,7 @@ EXPECTED_CONTENT
 
     describe '#ending_code' do
       it 'contains the ending_code' do
-        expect(diff_file.ending_code).to eq DocumentGenerator::Output.no_really_escape(CGI.escapeHTML(ending.strip))
+        expect(diff_file.ending_code).to eq ending.strip
       end
     end
 
@@ -455,7 +479,7 @@ EXPECTED
 
     describe '#ending_code' do
       it 'contains the ending_code' do
-        expect(diff_file.ending_code).to eq CGI.escapeHTML(ending.strip)
+        expect(diff_file.ending_code).to eq ending.strip
       end
     end
 
@@ -494,7 +518,9 @@ PATCH
 ###Create file `/spec/support/capybara.rb`
 
 Add
-<pre><code> Capybara.javascript_driver = :webkit</code></pre>
+```
+ Capybara.javascript_driver = :webkit
+```
 
 
 EXPECTED_CONTENT
