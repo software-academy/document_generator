@@ -40,6 +40,7 @@ title: #{first_line_of_commit_message}
 ---
 
 <h1 id="main">#{first_line_of_commit_message}</h1>
+
 HEADER
     end
 

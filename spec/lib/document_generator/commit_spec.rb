@@ -72,6 +72,7 @@ title: first commit
 
 <h1 id="main">first commit</h1>
 
+
 ### Additional Resources
 
 * [Changes in this step in `diff` format](http://github.com/stevenhallen/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
@@ -104,6 +105,7 @@ title: some commit message
 ---
 
 <h1 id="main">some commit message</h1>
+
 the diff_file content
 ### Additional Resources
 
@@ -130,6 +132,7 @@ title: This is one line
 ---
 
 <h1 id="main">This is one line</h1>
+
 EXPECTED
       end
 
@@ -148,6 +151,7 @@ title: This is one line
 ---
 
 <h1 id="main">This is one line</h1>
+
 EXPECTED
       end
 

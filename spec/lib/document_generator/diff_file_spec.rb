@@ -31,7 +31,7 @@ EXPECTED
 <<-EXPECTED_CONTENT
 ###Create file `/spec/support/capybara.rb`
 
-Add
+####Add
 ```
  Capybara.javascript_driver = :webkit
 ```
@@ -238,19 +238,19 @@ ENDING
 <<-EXPECTED_CONTENT
 ###Update file `/spec/controllers/posts_controller_spec.rb`
 
-Change
+####Change
 ```
        response.should be_success
 ```
 
 
-To
+####To
 ```
        expect(response).to be_success
 ```
 
 
-Becomes
+####Becomes
 ```
    describe 'GET #new' do
      it "returns http success" do
@@ -262,19 +262,19 @@ Becomes
 ```
 
 
-Change
+####Change
 ```
        response.should be_success
 ```
 
 
-To
+####To
 ```
        expect(response).to be_success
 ```
 
 
-Becomes
+####Becomes
 ```
    describe 'GET #index' do
      it "returns http success" do
@@ -372,31 +372,31 @@ ENDING
 <<-EXPECTED_CONTENT
 ###Update file `/spec/controllers/posts_controller_spec.rb`
 
-Change
+####Change
 ```
    describe GET new do
 ```
 
 
-To
+####To
 ```
    describe GET new do
 ```
 
 
-Change
+####Change
 ```
        get new
 ```
 
 
-To
+####To
 ```
        get new
 ```
 
 
-Becomes
+####Becomes
 ```
 describe PostsController do
 
@@ -517,7 +517,7 @@ PATCH
 <<-EXPECTED_CONTENT
 ###Create file `/spec/support/capybara.rb`
 
-Add
+####Add
 ```
  Capybara.javascript_driver = :webkit
 ```
@@ -549,18 +549,6 @@ index 0000000..12cefac
 +that
 +other
 PATCH
-    end
-
-    let(:expected_content) do
-<<-EXPECTED_CONTENT
-Create file `/spec/support/capybara.rb`
-
-Add
-
- Capybara.javascript_driver = :webkit
-
-
-EXPECTED_CONTENT
     end
 
     describe '#markdown_outputs' do
