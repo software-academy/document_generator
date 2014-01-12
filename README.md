@@ -1,4 +1,4 @@
-# DocumentGenerator [![Build Status](https://travis-ci.org/stevenhallen/document_generator.png)](https://travis-ci.org/stevenhallen/document_generator) [![Code Climate](https://codeclimate.com/github/stevenhallen/document_generator.png)](https://codeclimate.com/github/stevenhallen/document_generator)
+# DocumentGenerator [![Build Status](https://travis-ci.org/software-academy/document_generator.png)](https://travis-ci.org/software-academy/document_generator) [![Code Climate](https://codeclimate.com/github/software-academy/document_generator.png)](https://codeclimate.com/github/software-academy/document_generator)
 
 Generate GitHub pages from your repository's commits.
 
