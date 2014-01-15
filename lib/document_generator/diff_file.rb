@@ -57,7 +57,7 @@ module DocumentGenerator
       temp.join
     end
 
-    def ending_code # The escaped end result code for the whole diff file returned as a string
+    def ending_code
       clean_hunks = []
       git_diff_file_hunks.each do |hunk|
         clean_hunks << ending_code_for(hunk).join("\n")
@@ -65,7 +65,7 @@ module DocumentGenerator
       clean_hunks.join("\n")
     end
 
-    def ending_code_for(hunk) # The unescaped end result code for a particular hunk returned as array
+    def ending_code_for(hunk)
       clean_lines = []
 
       git_diff_lines_for(hunk).each_with_index do |line, index|

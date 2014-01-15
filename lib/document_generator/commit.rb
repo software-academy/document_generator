@@ -22,7 +22,7 @@ module DocumentGenerator
     def create
       File.open(relative_filename, 'w') do |writer|
         writer.write(header)
-        writer.write(details_of_commit_message) if details_of_commit_message
+        writer.write(commit_github_comments)
 
         diff_files.each do |diff_file|
           writer.write(diff_file.content)
@@ -54,16 +54,16 @@ HEADER
 ADDITIONAL
     end
 
+    def commit_github_comments
+
+    end
+
     def commit_message_lines
       git_commit.message.split("\n")
     end
 
     def first_line_of_commit_message
       commit_message_lines.first
-    end
-
-    def details_of_commit_message
-      commit_message_lines[1..-1].join("\n") if commit_message_lines.length > 1
     end
 
     def basename_prefix

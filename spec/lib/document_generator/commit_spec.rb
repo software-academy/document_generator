@@ -5,7 +5,7 @@ require 'spec_helper'
 describe DocumentGenerator::Commit do
   let(:commit) { described_class.new(base_url, git_commit) }
   let(:git_commit) { double(message: message, sha: sha) }
-  let(:base_url) { 'http://github.com/stevenhallen/document_generator' }
+  let(:base_url) { 'http://github.com/software-academy/document_generator' }
   let(:message) { 'Some commit message' }
   let(:sha) { 'da39a3ee5e6b4b0d3255bfef95601890afd80709' }
 
@@ -75,7 +75,7 @@ title: first commit
 
 ### Additional Resources
 
-* [Changes in this step in `diff` format](http://github.com/stevenhallen/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
+* [Changes in this step in `diff` format](http://github.com/software-academy/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
 
 EOF
 
@@ -109,7 +109,7 @@ title: some commit message
 the diff_file content
 ### Additional Resources
 
-* [Changes in this step in `diff` format](http://github.com/stevenhallen/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
+* [Changes in this step in `diff` format](http://github.com/software-academy/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
 
 EOF
       end
@@ -140,25 +140,6 @@ EXPECTED
         expect(commit.header).to eq expected_header
       end
     end
-
-    context 'when the commit message has more than one line' do
-      let(:message) {"This is one line\nThis is a second line."}
-      let(:expected_header) do
-<<-EXPECTED
----
-layout: default
-title: This is one line
----
-
-<h1 id="main">This is one line</h1>
-
-EXPECTED
-      end
-
-      it 'uses the first line of the commit message' do
-        expect(commit.header).to eq expected_header
-      end
-    end
   end
 
   describe '#additional' do
@@ -167,31 +148,13 @@ EXPECTED
 
 ### Additional Resources
 
-* [Changes in this step in `diff` format](http://github.com/stevenhallen/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
+* [Changes in this step in `diff` format](http://github.com/software-academy/commit/da39a3ee5e6b4b0d3255bfef95601890afd80709)
 
 EXPECTED_ADDITIONAL
     end
 
     it 'includes a link to the commit' do
       expect(commit.additional).to eq expected_additional
-    end
-  end
-
-  describe '#details_of_commit_message' do
-    context 'when the commit message is one line' do
-      let(:message) { 'One line' }
-
-      it 'is nil' do
-        expect(commit.details_of_commit_message).to be_nil
-      end
-    end
-
-    context 'when the commit message is multiple lines' do
-      let(:message) { "One line\nTwo lines\nThree and more" }
-
-      it 'is not empty' do
-        expect(commit.details_of_commit_message).to eq "Two lines\nThree and more"
-      end
     end
   end
 

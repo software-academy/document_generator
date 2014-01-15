@@ -4,7 +4,7 @@ require 'fileutils'
 
 module DocumentGenerator
   describe Repository do
-    let(:url) { 'https://github.com/stevenhallen/document_generator.git' }
+    let(:url) { 'https://github.com/software-academy/document_generator.git' }
     let(:repository) { Repository.new(url) }
 
     describe '.menu_relative_filename' do
@@ -14,10 +14,10 @@ module DocumentGenerator
     end
 
     describe '#base_url' do
-      let(:expected) { 'https://github.com/stevenhallen/document_generator/' }
+      let(:expected) { 'https://github.com/software-academy/document_generator/' }
 
       context 'when the url is a git url that is read-only' do
-        let(:url) { 'git://github.com/stevenhallen/document_generator.git' }
+        let(:url) { 'git://github.com/software-academy/document_generator.git' }
 
         it 'is the https url without the .git' do
           expect(repository.base_url).to eq expected
@@ -25,7 +25,7 @@ module DocumentGenerator
       end
 
       context 'when the url is a git url that is read-write' do
-        let(:url) { 'git@github.com:stevenhallen/document_generator.git' }
+        let(:url) { 'git@github.com:software-academy/document_generator.git' }
 
         it 'is the https url without the .git' do
           expect(repository.base_url).to eq expected
@@ -33,7 +33,7 @@ module DocumentGenerator
       end
 
       context 'when the url is a http url' do
-        let(:url) { 'http://github.com/stevenhallen/document_generator.git' }
+        let(:url) { 'http://github.com/software-academy/document_generator.git' }
 
         it 'is the https url without the .git' do
           expect(repository.base_url).to eq expected
@@ -42,7 +42,7 @@ module DocumentGenerator
     end
 
     describe '#name' do
-      let(:url) { 'https://github.com/stevenhallen/document_generator.git' }
+      let(:url) { 'https://github.com/software-academy/document_generator.git' }
 
       it 'is the last path segment from the normalized uri' do
         expect(repository.name).to eq 'document_generator'
@@ -50,7 +50,7 @@ module DocumentGenerator
     end
 
     describe '#generate' do
-      let(:url) { 'https://github.com/stevenhallen/rails_getting_started_bdd.git' }
+      let(:url) { 'https://github.com/software-academy/rails_getting_started_bdd.git' }
 
       let(:docs) { Dir.glob(File.expand_path('../../../../*.md', __FILE__)) }
       let(:root) { File.expand_path('../../../../.', __FILE__) }
