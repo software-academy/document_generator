@@ -1,3 +1,5 @@
+require 'base64'
+
 module DocumentGenerator
   class Repository
     attr_accessor :url
@@ -29,16 +31,52 @@ module DocumentGenerator
     def name
       uri.path.split('/')[-1]
     end
+         
+    def account_name
+      uri.path.split('/')[1]
+    end
+
+    def repository
+      uri.path.split('/')[2]
+    end
 
     def generate
       prepare
-
+      create_index_page
       File.open(Repository.menu_relative_filename, 'w') do |menu_writer|
         commits do |commit|
           menu_writer.write(commit.link)
           commit.create
         end
       end
+    end
+    
+    def create_index_page
+      File.open('index.md', 'w') do |writer|
+        writer.write(header)
+        writer.write(readme_contents)
+      end
+    end
+    
+
+    def header
+      <<-HEADER
+---
+layout: default
+title: #{repository}
+---
+
+
+HEADER
+    end
+    
+    def readme_contents
+      url = "https://api.github.com/repos/#{account_name}/#{repository}/readme"
+      resp = Net::HTTP.get_response(URI.parse(url))
+      data = resp.body
+      json = JSON.parse(data)
+      content = json["content"]
+      Base64.decode64(content)
     end
 
     def commits
