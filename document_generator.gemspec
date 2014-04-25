@@ -6,13 +6,13 @@ require 'document_generator/version'
 Gem::Specification.new do |spec|
   spec.name          = 'document_generator'
   spec.version       = DocumentGenerator::VERSION
-  spec.authors       = ['wiscoDude', 'm5rk', 'stevenhallen']
-  spec.email         = ['philip@stevenhallen.com', 'mark@stevenhallen.com']
+  spec.authors       = ['wiscoDude', 'm5rk', 'software-academy']
+  spec.email         = ['philip.harry@gmail.com', 'mark.mceahern@gmail.com']
   spec.description   = <<-DOCUMENT_GENERATOR
 Generate documentation from a git repository.
 DOCUMENT_GENERATOR
   spec.summary       = 'Generate documentation from a git repository.'
-  spec.homepage      = 'http://github.com/stevenhallen/document_generator'
+  spec.homepage      = 'http://github.com/software-academy/document_generator'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
