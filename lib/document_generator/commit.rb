@@ -29,10 +29,12 @@ module DocumentGenerator
     def create
       File.open(relative_filename, 'w') do |writer|
         writer.write(header)
-        writer.write(commit_github_comments)
+        writer.write(body_comments_markdown)
 
-        diff_files.each do |diff_file|
-          writer.write(diff_file.content)
+        if !skip_diff_files
+          diff_files.each do |diff_file|
+            writer.write(diff_file.content)
+          end
         end
 
         writer.write(additional)
@@ -62,7 +64,38 @@ ADDITIONAL
     end
 
     def commit_github_comments
+      url = "https://api.github.com/repos/#{account_name}/#{repo}/commits/#{git_commit.sha}/comments?access_token=#{access_token}"
+      resp = Net::HTTP.get_response(URI.parse(url))
+      data = resp.body
+      comments = JSON.parse(data)
+    end
 
+    def body_comments
+      comments = []
+
+      return comments unless commit_github_comments.any?
+      commit_github_comments.each do |comment|
+        # Only comments on the whole commit.
+        if comment["position"].nil?
+          comments << comment["body"]
+        end
+      end
+      comments
+    end
+
+    def body_comments_markdown
+      body_comments.join("\n\n").sub(IGNORE_DIFF_FILES, "") + "\n"
+    end
+
+    def skip_diff_files
+      return unless body_comments.any?
+      ignore_commit_files = false
+      body_comments.each do |comment|
+        if comment.include?(IGNORE_DIFF_FILES)
+          ignore_commit_files = true
+        end
+      end
+      ignore_commit_files
     end
 
     def commit_message_lines
