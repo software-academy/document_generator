@@ -52,14 +52,13 @@ module DocumentGenerator
         end
       end
     end
-    
+
     def create_index_page
       File.open('index.md', 'w') do |writer|
         writer.write(header)
         writer.write(readme_contents)
       end
     end
-    
 
     def header
       <<-HEADER

@@ -38,6 +38,7 @@ describe DocumentGenerator::Commit do
         end
       end
     end
+    
 
     context 'when the git_commit does not have a parent' do
       let(:parent) {nil}
