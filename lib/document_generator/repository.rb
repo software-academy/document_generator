@@ -2,7 +2,7 @@ require 'base64'
 
 module DocumentGenerator
   class Repository
-    attr_accessor :url
+    attr_accessor :url, :access_token
 
     def self.menu_dirname
       '_includes'
@@ -20,8 +20,9 @@ module DocumentGenerator
       File.join(default_dirname, 'default.html')
     end
 
-    def initialize(url)
+    def initialize(url, access_token)
       @url = url
+      @access_token = access_token
     end
 
     def base_url
@@ -29,9 +30,10 @@ module DocumentGenerator
     end
 
     def name
+      # What is the for?
       uri.path.split('/')[-1]
     end
-         
+
     def account_name
       uri.path.split('/')[1]
     end
@@ -69,9 +71,9 @@ title: #{repository}
 
 HEADER
     end
-    
+
     def readme_contents
-      url = "https://api.github.com/repos/#{account_name}/#{repository}/readme"
+      url = "https://api.github.com/repos/#{account_name}/#{repository}/readme?access_token=#{access_token}"
       resp = Net::HTTP.get_response(URI.parse(url))
       data = resp.body
       json = JSON.parse(data)
@@ -85,7 +87,7 @@ HEADER
 
         # TODO: Allow options to influence branch, number of commits, etc.
         repo.log(nil).reverse_each.map do |git_commit|
-          yield Commit.new(base_url, git_commit)
+          yield Commit.new(base_url, git_commit, account_name, repository, access_token)
         end
       end
     end

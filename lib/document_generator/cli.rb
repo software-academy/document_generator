@@ -3,7 +3,7 @@ module DocumentGenerator
     def self.start(args)
       options = parse(args)
 
-      Repository.new(options.url).generate
+      Repository.new(options.url, options.token).generate
     end
 
     def self.parse(args)
@@ -13,6 +13,10 @@ module DocumentGenerator
         opts.on('-u', '--url URL',
                 'URL for the repository') do |url|
           options.url = url
+        end
+        opts.on('-t', '--token URL',
+                'Token for access to github') do |token|
+          options.token = token
         end
       end
 

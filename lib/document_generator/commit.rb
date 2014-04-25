@@ -1,10 +1,17 @@
-module DocumentGenerator
-  class Commit
-    attr_accessor :base_url, :git_commit
+require 'net/http'
+require 'json'
 
-    def initialize(base_url, git_commit)
+module DocumentGenerator
+  IGNORE_DIFF_FILES = "[document_generator: skip_diff_files]"
+  class Commit
+    attr_accessor :base_url, :git_commit, :repo, :account_name, :access_token
+
+    def initialize(base_url, git_commit, account_name, repo, access_token)
       @base_url = base_url
       @git_commit = git_commit
+      @account_name = account_name
+      @repo = repo
+      @access_token = access_token
     end
 
     def diff_files
